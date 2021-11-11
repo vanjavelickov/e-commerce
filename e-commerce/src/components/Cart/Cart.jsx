@@ -1,13 +1,14 @@
 import React from "react";
 
 export default function Cart(props) {
-  const { cartItems, onAdd, onRemove } = props;
-    console.log(props)
-    console.log(props.cartItems)
-  const itemsPrice = cartItems.reduce((acc, curr) => acc + curr.price * curr.qty, 0);
+  const { cartItems, onAdd, onRemove, clearAll } = props;
+  const itemsPrice = cartItems.reduce(
+    (acc, curr) => acc + curr.rating * curr.qty,
+    0
+  );
   const taxPrice = itemsPrice * 0.14;
   const shippingPrice = itemsPrice > 2000 ? 0 : 50;
-  const totalPrice = itemsPrice + taxPrice + shippingPrice; 
+  const totalPrice = itemsPrice + taxPrice + shippingPrice;
 
   return (
     <aside className="block col-1">
@@ -25,15 +26,13 @@ export default function Cart(props) {
                 -
               </button>
             </div>
-            <div className="col-2 text-right">
-                {item.qty} x ${item.price.toFixed(2)}
-            </div>
+            <div className="col-2 text-right">{item.qty} x</div>
           </div>
         );
       })}
       {cartItems.length !== 0 && (
-          <>
-          <hr/>
+        <>
+          <hr />
           <div className="row">
             <div className="col-2">Items Price</div>
             <div className="col-1 text-right">${itemsPrice.toFixed(2)}</div>
@@ -47,13 +46,18 @@ export default function Cart(props) {
             <div className="col-1 text-right">${shippingPrice.toFixed(2)}</div>
           </div>
           <div className="row">
-            <div className="col-2"><strong>Total Price</strong></div>
+            <div className="col-2">
+              <strong>Total Price</strong>
+            </div>
             <div className="col-1 text-right">${totalPrice.toFixed(2)}</div>
           </div>
-          <div className="row">
-              <button onClick={() => alert('Implement Checkout')}>Checkout</button>
+          <div>
+            <button onClick={() => clearAll()}>Clear all</button>
           </div>
-          </>
+          <div className="row">
+            <button onClick={() => alert("Checkout")}>Checkout</button>
+          </div>
+        </>
       )}
     </aside>
   );
