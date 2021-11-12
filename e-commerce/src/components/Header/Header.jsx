@@ -65,7 +65,7 @@ export default function Header() {
 
   return (
     <Router>
-      <header className="block col-2">
+      <header>
         <div className="header">
           <div>
             <Link className="title" to="/">
@@ -76,7 +76,7 @@ export default function Header() {
             <Link to="/cart">
               Cart{" "}
               {cartItems.length ? (
-                <button className="badge">{cartItems.length}</button>
+                <button className="buttonBadge">{cartItems.length}</button>
               ) : (
                 ""
               )}
