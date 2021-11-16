@@ -28,7 +28,7 @@ export default function Cart(props) {
                     -
                   </button>
                 </div>
-                <div className="textRight">{item.qty} x</div>
+                <div className="textRight">{item.quantity} x</div>
               </div>
             );
           })}
