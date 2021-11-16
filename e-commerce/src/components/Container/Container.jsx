@@ -3,26 +3,13 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import App from "../../App";
 import Cart from "../Cart/Cart";
 import { useState, useEffect } from "react";
+import GetProducts from "../../hooks/GetProducts";
 
 export default function Container() {
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = GetProducts();
   const [cartItems, setCartItems] = useState([]);
 
   useEffect(() => {
-    fetch("https://retoolapi.dev/3scGq6/products")
-      .then((response) => {
-        if (!response.ok) {
-          console.log("no result");
-          return;
-        }
-        response.json().then((response) => {
-          setProducts(response);
-        });
-      })
-      .catch((err) => {
-        console.log("Error:", err);
-      });
-    // localStorage.clear();
     const cartItemsArray = JSON.parse(localStorage.getItem("cartItems"));
     if (cartItemsArray) {
       setCartItems(cartItemsArray);
@@ -38,7 +25,9 @@ export default function Container() {
     if (exist) {
       setCartItems(
         cartItems.map((item) =>
-        item.id === product.id ? { ...exist, quantity: exist.quantity + 1 } : item
+          item.id === product.id
+            ? { ...exist, quantity: exist.quantity + 1 }
+            : item
         )
       );
     } else {
@@ -53,7 +42,9 @@ export default function Container() {
     } else {
       setCartItems(
         cartItems.map((item) =>
-        item.id === product.id ? { ...exist, quantity: exist.quantity - 1 } : item
+          item.id === product.id
+            ? { ...exist, quantity: exist.quantity - 1 }
+            : item
         )
       );
     }
