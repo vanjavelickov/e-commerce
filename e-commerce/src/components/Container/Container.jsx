@@ -5,9 +5,10 @@ import Cart from "../Cart/Cart";
 import { useState, useEffect } from "react";
 import GetProducts from "../../hooks/GetProducts";
 import { connect } from "react-redux";
+import { setProductsToPage } from "../../redux/cart/cartActions";
 
-function Container({ cart }) {
-  const [products, setProducts] = GetProducts();
+function Container({ cart, setProductsToPage }) {
+  let [products, setProducts] = GetProducts();
   const [cartItems, setCartItems] = useState(0);
 
   useEffect(() => {
@@ -18,6 +19,7 @@ function Container({ cart }) {
     setCartItems(count);
     localStorage.setItem("cartItems", JSON.stringify(cart));
   }, [cart, cartItems]);
+  setProductsToPage(products);
 
   return (
     <Router>
@@ -52,9 +54,14 @@ function Container({ cart }) {
 
 const mapStateToProps = (state) => {
   return {
-    // products: state.cart.cartReducer,
     cart: state.cart.cart,
   };
 };
 
-export default connect(mapStateToProps)(Container);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setProductsToPage: (products) => dispatch(setProductsToPage(products)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Container);

@@ -3,8 +3,7 @@ import { useDispatch } from "react-redux";
 import { connect } from "react-redux";
 import { addToCart } from "../../redux/cart/cartActions";
 
-
-function Product({productData, addToCart}) {
+function Product({ productData, addToCart }) {
   const dispatch = useDispatch();
 
   return (
@@ -13,16 +12,16 @@ function Product({productData, addToCart}) {
       <div>{productData.name}</div>
       <div>${productData.rating}</div>
       <div>
-        <button onClick={(()=>addToCart(productData.id))}>Add to Cart</button>
+        <button onClick={() => addToCart(productData.id)}>Add to Cart</button>
       </div>
     </div>
   );
 }
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    addToCart: (id) => dispatch(addToCart(id))
-  }
-}
+    addToCart: (id) => dispatch(addToCart(id)),
+  };
+};
 
 export default connect(null, mapDispatchToProps)(Product);

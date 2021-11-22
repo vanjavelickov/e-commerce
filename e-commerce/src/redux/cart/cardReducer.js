@@ -1,71 +1,21 @@
 import * as actionTypes from "./cartTypes";
 
 const INITIAL_STATE = {
-  products: [
-    {
-      id: 1,
-      name: "Computer",
-      rating: "690",
-    },
-    {
-      id: 2,
-      name: "Mobile phone",
-      rating: "604",
-    },
-    {
-      id: 3,
-      name: "Camera",
-      rating: "751",
-    },
-    {
-      id: 4,
-      name: "Sports equipment",
-      rating: "718",
-    },
-    {
-      id: 5,
-      name: "Computer1",
-      rating: "747",
-    },
-    {
-      id: 6,
-      name: "Computer2",
-      rating: "678",
-    },
-    {
-      id: 7,
-      name: "Mobile phone1",
-      rating: "599",
-    },
-    {
-      id: 8,
-      name: "Mobile phone2",
-      rating: "569",
-    },
-    {
-      id: 9,
-      name: "Camera1",
-      rating: "521",
-    },
-    {
-      id: 10,
-      name: "Camera2",
-      rating: "543",
-    },
-    {
-      id: 11,
-      name: "Sports equipment1",
-      rating: "743",
-    },
-  ],
-  cart: JSON.parse(localStorage.getItem("cartItems")) || [],
-  currentItem: null,
+  products: [],
+  cart: localStorage.getItem("cartItems")
+    ? JSON.parse(localStorage.getItem("cartItems"))
+    : [],
 };
 
 const cartReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
+    case actionTypes.SET_PRODUCTS_TO_PAGE:
+      return {
+        ...state,
+        products: action.payload,
+      };
     case actionTypes.ADD_TO_CART:
-      const itemAdd = state.products.find(
+      const itemAdd = state.products.item.find(
         (prod) => prod.id === action.payload.id
       );
       const isInCartAdd = state.cart.find((item) =>
@@ -82,17 +32,18 @@ const cartReducer = (state = INITIAL_STATE, action) => {
           : [...state.cart, { ...itemAdd, quantity: 1 }],
       };
     case actionTypes.REMOVE_FROM_CART:
-      const itemRem = state.products.find(
+      const itemRem = state.products.item.find(
         (prod) => prod.id === action.payload.id
       );
-      const isInCartRem = state.cart.find((item) =>
-        item.id === action.payload.id ? true : false
+      const isInCartRem = state.cart.find((itemRem) =>
+        itemRem.id === action.payload.id ? true : false
       );
+
       return {
         ...state,
         cart:
           isInCartRem.quantity === 1
-            ? state.cart.filter((item) => item.id !== action.payload.id)
+            ? state.cart.filter((itemRem) => itemRem.id !== action.payload.id)
             : state.cart.map((itemRem) =>
                 itemRem.id === action.payload.id
                   ? { ...itemRem, quantity: itemRem.quantity - 1 }
@@ -104,7 +55,6 @@ const cartReducer = (state = INITIAL_STATE, action) => {
         ...state,
         cart: [],
       };
-
     default:
       return state;
   }

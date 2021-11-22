@@ -1,8 +1,6 @@
 import Main from "./components/Main/Main";
 
-function App({products}) {
-  // const { products, onAdd } = props;
-
+function App({ products }) {
   return (
     <div className="App">
       <div className="row">

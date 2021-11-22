@@ -1,7 +1,11 @@
 import React from "react";
 import { connect } from "react-redux";
 import { useDispatch } from "react-redux";
-import { addToCart, removeFromCart, removeAll } from "../../redux/cart/cartActions";
+import {
+  addToCart,
+  removeFromCart,
+  removeAll,
+} from "../../redux/cart/cartActions";
 
 function Cart({ cart, addToCart, removeFromCart, removeAll }) {
   const dispatch = useDispatch();
