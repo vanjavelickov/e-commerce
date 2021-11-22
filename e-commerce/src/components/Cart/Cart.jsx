@@ -1,9 +1,9 @@
 import React from "react";
 import { connect } from "react-redux";
 import { useDispatch } from "react-redux";
-import { addToCart, removeFromCart } from "../../redux/cart/cartActions";
+import { addToCart, removeFromCart, removeAll } from "../../redux/cart/cartActions";
 
-function Cart({ cart, addToCart, removeFromCart }) {
+function Cart({ cart, addToCart, removeFromCart, removeAll }) {
   const dispatch = useDispatch();
 
   return (
@@ -43,7 +43,7 @@ function Cart({ cart, addToCart, removeFromCart }) {
         {cart.length !== 0 && (
           <>
             <div>
-              <button>Clear all</button>
+              <button onClick={() => removeAll()}>Clear all</button>
             </div>
             <div className="row">
               <button onClick={() => alert("Checkout")}>Checkout</button>
@@ -65,6 +65,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     addToCart: (id) => dispatch(addToCart(id)),
     removeFromCart: (id) => dispatch(removeFromCart(id)),
+    removeAll: () => dispatch(removeAll()),
   };
 };
 

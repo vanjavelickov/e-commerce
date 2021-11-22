@@ -65,7 +65,9 @@ const INITIAL_STATE = {
 const cartReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case actionTypes.ADD_TO_CART:
-      const itemAdd = state.products.find((prod) => prod.id === action.payload.id);
+      const itemAdd = state.products.find(
+        (prod) => prod.id === action.payload.id
+      );
       const isInCartAdd = state.cart.find((item) =>
         item.id === action.payload.id ? true : false
       );
@@ -80,21 +82,28 @@ const cartReducer = (state = INITIAL_STATE, action) => {
           : [...state.cart, { ...itemAdd, quantity: 1 }],
       };
     case actionTypes.REMOVE_FROM_CART:
-        const itemRem = state.products.find((prod) => prod.id === action.payload.id);
-        const isInCartRem = state.cart.find((item) =>
-          item.id === action.payload.id ? true : false
-        );
+      const itemRem = state.products.find(
+        (prod) => prod.id === action.payload.id
+      );
+      const isInCartRem = state.cart.find((item) =>
+        item.id === action.payload.id ? true : false
+      );
       return {
         ...state,
-        cart: isInCartRem
-            ? state.cart.map((itemRem) =>
-            itemRem.id === action.payload.id
+        cart:
+          isInCartRem.quantity === 1
+            ? state.cart.filter((item) => item.id !== action.payload.id)
+            : state.cart.map((itemRem) =>
+                itemRem.id === action.payload.id
                   ? { ...itemRem, quantity: itemRem.quantity - 1 }
                   : itemRem
-              ) : [...state.cart, { ...itemRem, quantity: 0 }],
+              ),
       };
     case actionTypes.REMOVE_ALL:
-      return {};
+      return {
+        ...state,
+        cart: [],
+      };
 
     default:
       return state;
