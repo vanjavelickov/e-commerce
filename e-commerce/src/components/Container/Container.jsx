@@ -4,55 +4,20 @@ import App from "../../App";
 import Cart from "../Cart/Cart";
 import { useState, useEffect } from "react";
 import GetProducts from "../../hooks/GetProducts";
+import { connect } from "react-redux";
 
-export default function Container() {
+function Container({ cart }) {
   const [products, setProducts] = GetProducts();
-  const [cartItems, setCartItems] = useState([]);
+  const [cartItems, setCartItems] = useState(0);
 
   useEffect(() => {
-    const cartItemsArray = JSON.parse(localStorage.getItem("cartItems"));
-    if (cartItemsArray) {
-      setCartItems(cartItemsArray);
-    }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem("cartItems", JSON.stringify(cartItems));
-  }, [cartItems]);
-
-  const onAdd = (product) => {
-    const exist = cartItems.find((item) => item.id === product.id);
-    if (exist) {
-      setCartItems(
-        cartItems.map((item) =>
-          item.id === product.id
-            ? { ...exist, quantity: exist.quantity + 1 }
-            : item
-        )
-      );
-    } else {
-      setCartItems([...cartItems, { ...product, quantity: 1 }]);
-    }
-  };
-
-  const onRemove = (product) => {
-    const exist = cartItems.find((item) => item.id === product.id);
-    if (exist.quantity === 1) {
-      setCartItems(cartItems.filter((item) => item.id !== product.id));
-    } else {
-      setCartItems(
-        cartItems.map((item) =>
-          item.id === product.id
-            ? { ...exist, quantity: exist.quantity - 1 }
-            : item
-        )
-      );
-    }
-  };
-
-  const clearAll = () => {
-    setCartItems([]);
-  };
+    let count = 0;
+    cart.forEach((item) => {
+      count += item.quantity;
+    });
+    setCartItems(count);
+    localStorage.setItem("cartItems", JSON.stringify(cart));
+  }, [cart, cartItems]);
 
   return (
     <Router>
@@ -66,11 +31,9 @@ export default function Container() {
           <div>
             <Link to="/cart">
               Cart{" "}
-              {cartItems.length ? (
-                <button className="buttonBadge">{cartItems.length}</button>
-              ) : (
-                ""
-              )}
+              <button className="buttonBadge">
+                <span>{cart.length}</span>
+              </button>
             </Link>
           </div>
         </div>
@@ -78,21 +41,20 @@ export default function Container() {
           <Route
             exact
             path="/"
-            element={<App products={products} onAdd={onAdd}></App>}
+            element={<App products={products}></App>}
           ></Route>
-          <Route
-            path="/cart"
-            element={
-              <Cart
-                onAdd={onAdd}
-                onRemove={onRemove}
-                cartItems={cartItems}
-                clearAll={clearAll}
-              />
-            }
-          ></Route>
+          <Route path="/cart" element={<Cart cartItems={cart} />}></Route>
         </Routes>
       </header>
     </Router>
   );
 }
+
+const mapStateToProps = (state) => {
+  return {
+    // products: state.cart.cartReducer,
+    cart: state.cart.cart,
+  };
+};
+
+export default connect(mapStateToProps)(Container);

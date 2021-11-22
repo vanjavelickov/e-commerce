@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 
 const GetProducts = () => {
   const [products, setProducts] = useState([]);
-
   useEffect(() => {
     fetch("https://retoolapi.dev/3scGq6/products")
       .then((response) => {
