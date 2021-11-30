@@ -1,13 +1,14 @@
 import React from "react";
-import { connect } from "react-redux";
 import { useDispatch } from "react-redux";
 import {
   addToCart,
   removeFromCart,
   removeAll,
 } from "../../redux/cart/cartActions";
+import { useSelector } from "react-redux";
 
-function Cart({ cart, addToCart, removeFromCart, removeAll }) {
+function Cart() {
+  const cart = useSelector(state => state.cart.cart)  
   const dispatch = useDispatch();
 
   return (
@@ -25,13 +26,13 @@ function Cart({ cart, addToCart, removeFromCart, removeAll }) {
                 <div>{item.name}</div>
                 <div>
                   <button
-                    onClick={() => addToCart(item.id)}
+                    onClick={() => dispatch(addToCart(item.id))}
                     className="buttonAdd"
                   >
                     +
                   </button>
                   <button
-                    onClick={() => removeFromCart(item.id)}
+                    onClick={() => dispatch(removeFromCart(item.id))}
                     className="buttonRemove"
                   >
                     -
@@ -47,7 +48,7 @@ function Cart({ cart, addToCart, removeFromCart, removeAll }) {
         {cart.length !== 0 && (
           <>
             <div>
-              <button onClick={() => removeAll()}>Clear all</button>
+              <button onClick={() => dispatch(removeAll())}>Clear all</button>
             </div>
             <div className="row">
               <button onClick={() => alert("Checkout")}>Checkout</button>
@@ -59,18 +60,4 @@ function Cart({ cart, addToCart, removeFromCart, removeAll }) {
   );
 }
 
-const mapStateToProps = (state) => {
-  return {
-    cart: state.cart.cart,
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    addToCart: (id) => dispatch(addToCart(id)),
-    removeFromCart: (id) => dispatch(removeFromCart(id)),
-    removeAll: () => dispatch(removeAll()),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Cart);
+export default Cart;
