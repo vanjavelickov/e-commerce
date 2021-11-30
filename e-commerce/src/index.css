@@ -109,3 +109,20 @@ button {
   justify-content: space-around;
   align-items: center;
 }
+
+.signUp {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 60%;
+  align-items: center;
+  background-color: rgb(233, 181, 161);
+}
+
+.signUpButton{
+  background-color: #62B5BC;
+}
+
+#pass {
+-webkit-text-security: disc;
+}
