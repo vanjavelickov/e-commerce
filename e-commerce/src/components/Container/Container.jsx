@@ -4,16 +4,21 @@ import App from "../../App";
 import Cart from "../Cart/Cart";
 import { useState, useEffect } from "react";
 import GetProducts from "../../hooks/GetProducts";
-import { connect } from "react-redux";
 import { setProductsToPage } from "../../redux/cart/cartActions";
 import SignIn from "../SignIn/SignIn";
 import SignUp from "../SignUp/SignUp";
 import PrivateRoute from "../../routes/PrivateRoutes";
 import PublicRoute from "../../routes/PublicRoute";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
-function Container({ cart, setProductsToPage }) {
+
+function Container() {
   let [products, setProducts] = GetProducts();
   const [cartItems, setCartItems] = useState(0);
+  const cart = useSelector(state => state.cart.cart)  
+  const dispatch = useDispatch();
+
 
   useEffect(() => {
     let count = 0;
@@ -23,8 +28,8 @@ function Container({ cart, setProductsToPage }) {
     setCartItems(count);
     localStorage.setItem("cartItems", JSON.stringify(cart));
   }, [cart, cartItems]);
-  setProductsToPage(products);
 
+  dispatch(setProductsToPage(products))
   return (
     <Router>
       <Fragment>
@@ -67,16 +72,4 @@ function Container({ cart, setProductsToPage }) {
   );
 }
 
-const mapStateToProps = (state) => {
-  return {
-    cart: state.cart.cart,
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    setProductsToPage: (products) => dispatch(setProductsToPage(products)),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Container);
+export default Container;
